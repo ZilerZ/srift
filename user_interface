@@ -48,8 +48,8 @@ do
         if (typeof(theme) == 'string') then
             if (theme == 'cherry') then          -- red
                 theme = {
-                    Primary = Color3.fromRGB(120, 81, 169);
-                    Secondary = Color3.fromRGB(5, 4, 170);
+                    Primary = Color3.fromRGB(255, 126, 185);
+                    Secondary = Color3.fromRGB(138, 43, 226);
                     
                     Window1 = Color3.fromRGB(11, 11, 11);
                     Window2 = Color3.fromRGB(5, 5, 5);
