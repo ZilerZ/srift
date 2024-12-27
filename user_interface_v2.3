@@ -186,6 +186,7 @@ function Library.new(options)
 	Title.TextColor3 = Theme.PrimaryColor
 	Title.TextXAlignment = "Center"
 	Title.TextSize = 40
+	Glow.Background.BackgroundColor3 = Color3.fromRGB(10,10,10)
 
 end
 
@@ -1800,7 +1801,325 @@ task.spawn(function()
 end)
 
 
+local ESP = {
+    enabled = false,
+    max_distance = 400,
+    teamcheck = false,
 
+    font = "pixel", -- minecraftia
+    text_size = 9,
+
+    higlight = {
+        enabled = false,
+        target = nil,
+        color = Color3.fromRGB(120, 120, 255)
+    },
+    prio = {
+        enabled = false,
+        target = nil,
+        color = Color3.fromRGB(255, 120, 120)
+    },
+    friendly = {
+        enabled = false,
+        target = nil,
+        color = Color3.fromRGB(120, 255, 149)
+    },
+
+    chams = {
+        enabled = false,
+        color = Color3.fromRGB(255,255,255),
+        color2 = Color3.fromRGB(0,0,0),
+
+        ofillt = 0,
+        ifillt = 0,
+
+        mode = Enum.HighlightDepthMode.AlwaysOnTop,
+    },
+    boxes = {
+        enabled = false,
+        color = Color3.fromRGB(255, 255, 255),
+        color2 = Color3.fromRGB(255, 255, 255),
+
+        fill = false,
+        topcolor = Color3.fromRGB(255, 255, 255),
+        bottomcolor = Color3.fromRGB(255, 255, 255),
+        rotation = 100,
+
+        animate_box = false,
+        animate_fill = false,
+        animation_speed = 300,
+    },
+    healthbar = {
+        enabled = false,  
+        text = false,
+        textcolor = Color3.fromRGB(119, 120, 255),
+        lerp_color = true,
+        g1 = Color3.fromRGB(200, 0, 0), 
+        g2 = Color3.fromRGB(255, 220, 124), 
+        g3 = Color3.fromRGB(119, 255, 130), 
+    },
+    name = {
+        enabled = false,
+        color = Color3.fromRGB(255, 255, 255),
+        color2 = Color3.fromRGB(255, 255, 255),
+    },
+    distance = {
+        enabled = false,
+        color = Color3.fromRGB(255, 255, 255),
+        color2 = Color3.fromRGB(255, 255, 255),
+    },
+    weapon = {
+        enabled = false, 
+        ammo = false,
+        icon = false,
+        color = Color3.fromRGB(255,255,255),
+        color2 = Color3.fromRGB(255,255,255),
+        iconcolor = Color3.fromRGB(255,255,255),
+        iconcolor2 = Color3.fromRGB(255,255,255)
+    },
+    flags = {
+        enabled = false, 
+        aiming = false,
+        aiming_color = Color3.fromRGB(255, 120, 120),
+        extract = false,
+        extract_color = Color3.fromRGB(255, 236, 125),
+        kd = false,
+        kd_color = Color3.fromRGB(125, 255, 223),
+        bleeding = false,
+        bleeding_color = Color3.fromRGB(255, 0, 0),
+    }
+}
+
+
+
+local ui = {} do 
+    ui.window = Library.new({sizeX = 1046, sizeY = 724, title = "Pulsive", tabWidth = 200, PrimaryBackgroundColor = Library.Theme.PrimaryBackgroundColor, SecondaryBackgroundColor = Library.Theme.SecondaryBackgroundColor, TertiaryBackgroundColor = Library.Theme.TertiaryBackgroundColor, TabBackgroundColor = Library.Theme.TabBackgroundColor, PrimaryTextColor = Library.Theme.PrimaryTextColor, SecondaryTextColor = Library.Theme.SecondaryTextColor, PrimaryColor = Library.Theme.PrimaryColor, ScrollingBarImageColor = Library.Theme.ScrollingBarImageColor, Line = Library.Theme.Line})
+
+    ui.tabs = {} do 
+        ui.tabs.combat = Library:createTab({text = "Combat", icon = "124718082122263", })
+        ui.tabs.visuals = Library:createTab({text = "Visuals", icon = "124718082122263", })
+        ui.tabs.misc = Library:createTab({text = "Miscellaneous", icon = "124718082122263", })       
+    end
+
+    do -- // ui
+        do -- // combat
+            local Aiming = ui.tabs.combat:createSubTab({text = "Aiming", sectionStyle = "Double"})
+            do -- // aiming
+
+            end
+        end
+        do -- // visuals
+            local Players = ui.tabs.visuals:createSubTab({text = "Players", sectionStyle = "Double"})
+            local playeresp = Players:createSection({text = "Player", position = "Left",})        
+            do -- // player esp
+                playeresp:createToggle({text = "Enabled", state = false, callback = function(v)
+                    ESP.enabled = v
+                end})
+                do -- // box
+                    local Box = playeresp:createToggle({text = "Box", state = false, callback = function(v)
+                        ESP.boxes.enabled = v
+                    end})
+                    Box:createToggle({text = "Fill", state = false, callback = function(v)
+                        ESP.boxes.fill = v
+                    end})
+                    Box:createPicker({text = "Fill Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.boxes.topcolor = v
+                    end})
+                    Box:createPicker({text = "Fill Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.boxes.bottomcolor = v
+                    end})
+                    Box:createPicker({text = "Box Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.boxes.color = v
+                    end})
+                    Box:createPicker({text = "Box Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.boxes.color2 = v
+                    end})
+                end
+
+                do -- // hp bar
+                    local hpbar = playeresp:createToggle({text = "Healthbar", state = false, callback = function(v)
+                        ESP.healthbar.enabled = v
+                    end})
+                    hpbar:createToggle({text = "Health Text", state = false, callback = function(v)
+                        ESP.healthbar.text = v
+                    end})
+                    hpbar:createPicker({text = "Healthbar Color 1", default = Color3.fromRGB(200, 0, 0), callback = function(v)
+                        ESP.healthbar.g1 = v
+                    end})
+                    hpbar:createPicker({text = "Healthbar Color 2", default = Color3.fromRGB(255, 220, 124), callback = function(v)
+                        ESP.healthbar.g2 = v
+                    end})
+                    hpbar:createPicker({text = "Healthbar Color 3", default = Color3.fromRGB(119, 255, 130), callback = function(v)
+                        ESP.healthbar.g3 = v
+                    end})
+                end
+
+                do -- // name
+                    local name = playeresp:createToggle({text = "Name", state = false, callback = function(v)
+                        ESP.name.enabled = v
+                    end})
+
+                    name:createPicker({text = "Name Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.name.color = v
+                    end})
+                    name:createPicker({text = "Name Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.name.color2 = v
+                    end})
+                end
+
+                do -- // distance
+                    local distance = playeresp:createToggle({text = "Distance", state = false, callback = function(v)
+                        ESP.distance.enabled = v
+                    end})
+
+                    distance:createPicker({text = "Distance Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.distance.color = v
+                    end})
+                    distance:createPicker({text = "Distance Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.distance.color2 = v
+                    end})
+                end
+
+                do -- // weapon
+                    local weapon = playeresp:createToggle({text = "Weapon", state = false, callback = function(v)
+                        ESP.weapon.enabled = v
+                    end})
+
+                    weapon:createToggle({text = "Show Icon", state = false, callback = function(v)
+                        ESP.weapon.icon = v
+                    end})
+                    weapon:createPicker({text = "Icon Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.weapon.iconcolor = v
+                    end})
+                    weapon:createPicker({text = "Icon Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.weapon.iconcolor2 = v
+                    end})
+                    weapon:createToggle({text = "Show Ammo", state = false, callback = function(v)
+                        ESP.weapon.ammo = v
+                    end})
+                    weapon:createPicker({text = "Weapon Color 1", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.weapon.color = v
+                    end})
+                    weapon:createPicker({text = "Weapon Color 2", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.weapon.color2 = v
+                    end})
+                end
+
+                do -- // flags
+                    local flags = playeresp:createToggle({text = "Flags", state = false, callback = function(v)
+                        ESP.flags.enabled = v
+                    end})
+                    flags:createToggle({text = "K/D Ratio", state = false, callback = function(v)
+                        ESP.flags.kd = v
+                    end})
+                    flags:createPicker({text = "KD COlor", default = Color3.fromRGB(125, 255, 223), callback = function(v)
+                        ESP.flags.kd_color = v
+                    end})
+                    flags:createToggle({text = "Extracting", state = false, callback = function(v)
+                        ESP.flags.extract = v
+                    end})
+                    flags:createPicker({text = "Extract Color", default = Color3.fromRGB(255, 236, 125), callback = function(v)
+                        ESP.flags.extract_color = v
+                    end})
+                    flags:createToggle({text = "Aiming", state = false, callback = function(v)
+                        ESP.flags.aiming = v
+                    end})
+                    flags:createPicker({text = "Aiming Color", default = Color3.fromRGB(255, 120, 120), callback = function(v)
+                        ESP.flags.aiming_color = v
+                    end})
+                    flags:createToggle({text = "Bleeding", state = false, callback = function(v)
+                        ESP.flags.bleeding = v
+                    end})
+                    flags:createPicker({text = "Bleeding Color", default = Color3.fromRGB(255, 0, 0), callback = function(v)
+                        ESP.flags.bleeding_color = v
+                    end})
+                end
+
+                do -- // chams
+                    local chams = playeresp:createToggle({text = "Chams", state = false, callback = function(v)
+                        ESP.chams.enabled = v
+                    end})
+
+                    chams:createPicker({text = "Fill Color", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.chams.color = v
+                    end})
+                    chams:createPicker({text = "Outline Color", default = Color3.fromRGB(255, 255, 255), callback = function(v)
+                        ESP.chams.color2 = v
+                    end})
+                    chams:createSlider({text = "Fill Transparency", min = 0, max = 1, step = 1, callback = function(v)
+                        ESP.chams.ifillt = v
+                    end})
+                    chams:createSlider({text = "Outline Transparency", min = 0, max = 1, step = 1, callback = function(v)
+                        ESP.chams.ofillt = v
+                    end})
+                    chams:createDropdown({text = "Type", list = {"AlwaysOnTop", "Occluded"}, default = {"AlwaysOnTop"}, multiple = false,  callback = function(v)
+                        if v == "AlwaysOnTop" then
+                            ESP.chams.mode = Enum.HighlightDepthMode.AlwaysOnTop
+
+                        elseif v == "Occluded" then
+                            ESP.chams.mode = Enum.HighlightDepthMode.Occluded
+                        end
+                    end})
+                end
+            end
+
+            local playerespsettings = Players:createSection({text = "Settings", position = "Right",})   
+            do -- // esp settings
+                playerespsettings:createToggle({text = "Team Check", state = false, callback = function(v)
+                    ESP.teamcheck = v
+                end})
+                playerespsettings:createToggle({text = "Animate Elemants", state = false, callback = function(v)
+                    ESP.boxes.animate_box = v
+                    ESP.boxes.animate_fill = v
+                end})
+                playerespsettings:createSlider({text = "Max Distance", min = 0, max = 1000, step = 1, callback = function(v)
+                    ESP.max_distance = v
+                end}):updateValue({value = 400})
+                playerespsettings:createSlider({text = "Animation Speed", min = 0, max = 1000, step = 1, callback = function(v)
+                    ESP.boxes.animation_speed = v
+                end}):updateValue({value = 300})
+                playerespsettings:createSlider({text = "Font Size", min = 0, max = 25, step = 1, callback = function(v)
+                    ESP.text_size = v
+                end}):updateValue({value = 9})
+
+                playerespsettings:createDropdown({text = "Font", list = {"pixel", "minecraftia"}, default = {"pixel"}, multiple = false,  callback = function(v)
+                    ESP.font = v
+                end})
+            end
+
+            local targeting = Players:createSection({text = "Targeting", position = "Left",})  
+            do -- // targeting
+                targeting:createToggle({text = "Highlight Target", state = false, callback = function(v)
+                    ESP.higlight.enabled = v
+                end})
+                targeting:createPicker({text = "Target Color", default = Color3.fromRGB(255, 0, 0), callback = function(v)
+                    ESP.higlight.color = v
+                end})
+                targeting:createToggle({text = "Highlight Priority", state = false, callback = function(v)
+                    ESP.prio.enabled = v
+                end})
+                targeting:createPicker({text = "Priority Color", default = Color3.fromRGB(0, 0, 255), callback = function(v)
+                    ESP.prio.color = v
+                end})
+                targeting:createToggle({text = "Highlight Friendly", state = false, callback = function(v)
+                    ESP.friendly.enabled = v
+                end})
+                targeting:createPicker({text = "Friendly Color", default = Color3.fromRGB(0, 255, 0), callback = function(v)
+                    ESP.friendly.color = v
+                end})
+            end
+        end
+        do -- // misc
+            local General = ui.tabs.misc:createSubTab({text = "General", sectionStyle = "Double"})
+            do -- // general
+
+            end
+        end
+        do -- // settings
+            Library:createManager({folderName = "pulsive"})
+        end
+    end
+end
 
 
 
