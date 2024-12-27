@@ -70,6 +70,9 @@ local Popups = ScreenGui.Popups
 local Glow = ScreenGui.Glow
 Glow.Size = UDim2.fromOffset(Library.sizeX, Library.sizeY)
 
+
+
+
 local Background = Glow.Background
 
 local Tabs = Background.Tabs
@@ -113,6 +116,9 @@ Resize.InputEnded:Connect(function(input)
 		tabResizing = false
 	end
 end)
+
+
+
 
 -- Mobile compatibility
 Glow:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
@@ -170,8 +176,17 @@ function Library.new(options)
 	Library.Theme.Line = options.Line
 
 	ScreenGui.Enabled = true
-	Title.Text = options.title
 	Glow.Size = UDim2.fromOffset(options.sizeX, options.sizeY)
+
+	-- // my modding shit <3
+	Glow.Background.UICorner:Destroy()
+	Tabs.Size = UDim2.new(0, 74, 1, 0)
+	Background.Pages.Size = UDim2.new(1, -74, 1, 0)
+	Title.Text = string.sub(options.title, 1, 1)
+	Title.TextColor3 = Theme.PrimaryColor
+	Title.TextXAlignment = "Center"
+	Title.TextSize = 40
+
 end
 
 function Library:createAddons(text, imageButton, scrollingFrame, additionalAddons)	
@@ -321,9 +336,6 @@ function Library:createTab(options: table)
 		icon = {Default = "124718082122263", ExpectedType = "string"},
 	})
 
-	-- Change tab size depending on Library.tabSizeX, maybe make resizer for tabs later
-	Background.Tabs.Size = UDim2.new(0, Library.tabSizeX, 1, 0)
-	Background.Pages.Size = UDim2.new(1, -Library.tabSizeX, 1, 0)
 
 	local ScrollingFrame = Background.Tabs.Frame.ScrollingFrame
 
@@ -432,6 +444,7 @@ function Library:createTab(options: table)
 	
 	Theme:registerToObjects({
 		{object = Tab, property = "BackgroundColor3", theme = {"TabBackgroundColor"}},
+		{object = Title, property = "TextColor3", theme = {"PrimaryColor"}},
 		{object = Icon, property = "ImageColor3", theme = {"SecondaryTextColor", "PrimaryColor"}},
 		{object = TextButton, property = "TextColor3", theme = {"SecondaryTextColor", "PrimaryColor"}},
 		{object = Frame, property = "BackgroundColor3", theme = {"PrimaryBackgroundColor"}},
@@ -1785,5 +1798,11 @@ task.spawn(function()
 		end
 	end
 end)
+
+
+
+
+
+
 
 return Library
