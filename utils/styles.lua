@@ -6,7 +6,7 @@ local Theme = {
 	TabBackgroundColor = Color3.fromRGB(15,16,20),
 	PrimaryTextColor = Color3.fromRGB(255, 255, 255),
 	SecondaryTextColor = Color3.fromRGB(125, 146, 173),
-	PrimaryColor = Color3.fromRGB(0,52,255),
+	PrimaryColor = Color3.fromRGB(216, 11, 65),
 	ScrollingBarImageColor = Color3.fromRGB(151, 151, 172),
 	Line = Color3.fromRGB(28,29,32),
 }
