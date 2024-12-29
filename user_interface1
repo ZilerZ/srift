@@ -179,7 +179,7 @@ function Library.new(options)
 	Glow.Size = UDim2.fromOffset(options.sizeX, options.sizeY)
 
 	-- // my modding shit <3
-	Glow.Background:WaitForChild("UICorner"):Destroy()
+	--Glow.Background:WaitForChild("UICorner"):Destroy()
 	Tabs.Size = UDim2.new(0, 72, 1, 0)
 	Background.Pages.Size = UDim2.new(1, -72, 1, 0)
 	Title.Text = string.sub(options.title, 1, 1)
