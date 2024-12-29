@@ -58,5 +58,37 @@ local WeaponIcons = {
     ["MAKAROV"]        = "rbxassetid://16029072524";
     ["TFZ0"]           = "rbxassetid://15146652920";
     ["M1911"]          = "rbxassetid://14263873943";
-};
-return WeaponIcons
+}
+
+local ItemIcons = {
+    ["Food"]               = "rbxassetid://86888178278186";
+    ["Medical"]            = "rbxassetid://120592575794842";
+    ["MeleeWeapon"]        = "rbxassetid://108187917404409";
+    ["RangedWeapon"]       = "rbxassetid://71305277739711";
+    ["Grenade"]            = "rbxassetid://110170822126874";
+    ["Ammo"]               = "rbxassetid://100200784826019";
+    ["Clothing"]           = "rbxassetid://97910590950171";
+    ["Key"]                = "rbxassetid://131820301524990";
+    ["Equipment"]          = "rbxassetid://98863328782484";
+    ["Material"]           = "rbxassetid://117256085187180";
+    ["RepairKit"]          = "rbxassetid://94244323842916";
+    ["Barter"]             = "rbxassetid://107876727973824";
+    ["Sight"]              = "rbxassetid://139677171980493";
+    ["Front"]              = "rbxassetid://139677171980493";
+    ["Muzzle"]             = "rbxassetid://139677171980493";
+    ["Visor"]              = "rbxassetid://97910590950171";
+    ["Stock"]              = "rbxassetid://139677171980493";
+    ["Magazine"]           = "rbxassetid://100200784826019";
+    ["Handle"]             = "rbxassetid://139677171980493";
+    ["Extra"]              = "rbxassetid://107876727973824";
+    ["Filter"]             = "rbxassetid://97910590950171";
+    ["HelmetMask"]         = "rbxassetid://97910590950171";
+    ["Buildable"]          = "rbxassetid://84982646381095";
+}
+
+local OtherIcons = {
+    ["Exit"]               = "rbxassetid://14239902836";
+    ["Corpse"]            = "rbxassetid://14239904666";
+}
+
+return WeaponIcons, ItemIcons, OtherIcons
