@@ -359,8 +359,15 @@ function Library:createTab(options: table)
 	local PageLine = Frame.Line
 
 	local CurrentTabLabel = Frame.CurrentTabLabel
-	CurrentTabLabel.Text = options.text
+	CurrentTabLabel.Text = "> " .. options.text
+	CurrentTabLabel.Position = UDim2.new(0,110,0,0)
 	CurrentTabLabel.TextColor3 = Theme.PrimaryTextColor
+
+	local scriptNameLabel = CurrentTabLabel:Clone()
+	scriptNameLabel.Parent = Frame 
+	scriptNameLabel.Text = "Scriptersrift"
+	scriptNameLabel.Position = UDim2.new(0,0,0,0)
+	scriptNameLabel.TextColor3 = Theme.PrimaryColor
 
 	local SubTabs = Page.SubTabs
 	local SubLine = SubTabs.Line
@@ -375,6 +382,7 @@ function Library:createTab(options: table)
 		local function tweenFadeAndPage(fade: Instance, backgroundTransparency: number, textTransparency: number, paddingY: number)
 			Utility:tween(fade, {BackgroundTransparency = backgroundTransparency}, 0.2):Play()
 			Utility:tween(CurrentTabLabel.UIPadding, {PaddingBottom = UDim.new(0, paddingY)}, 0.2):Play()
+			Utility:tween(scriptNameLabel.UIPadding, {PaddingBottom = UDim.new(0, paddingY)}, 0.2):Play()
 		end
 
 		for _, subPage in ipairs(Page:GetChildren()) do
@@ -1799,7 +1807,6 @@ task.spawn(function()
 		end
 	end
 end)
-
 
 
 
